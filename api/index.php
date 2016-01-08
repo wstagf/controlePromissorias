@@ -275,8 +275,137 @@ $app->get('/excluirPerfilUsuario/:idPerfilUsuario', 'auth', function ($idPerfilU
 
 
 
+
+// Crud Endereco
+$app->post(
+    '/createEndereco',
+    function () use ($app) {
+		$data = json_decode($app->request()->getBody());
+        $logradouro = (isset($data->logradouro)) ? $data->logradouro : "";
+		$numero = (isset($data->numero)) ? $data->numero : "";
+		$complemento = (isset($data->complemento)) ? $data->complemento : "";
+		$bairro = (isset($data->bairro)) ? $data->bairro : "";
+		$cidade_id = (isset($data->cidade_id)) ? $data->cidade_id : "";
+		$cep = (isset($data->cep)) ? $data->cep : "";
+		$latitude = (isset($data->latitude)) ? $data->latitude : "";
+		$longetude = (isset($data->longetude)) ? $data->longetude : "";
+		$ponto_referencia = (isset($data->ponto_referencia)) ? $data->ponto_referencia : "";
+
+        $link =createDB();
+       
+		$sql = "INSERT INTO endereco (logradouro, numero, complemento, bairro, cidade_id, cep, latitude, "
+			." longetude, ponto_referencia  ) VALUES ('".$logradouro."', '".$numero."', '".$complemento."', '".$bairro."', "
+		   . $cidade_id  .", ". $cep  .", '". $latitude  ."', '". $longetude  ."', '".$ponto_referencia. "');";
+		$result =  mysql_query($sql, $link);
+		
+		if ($result) {
+			if (mysql_errno($link) == 0 ) {
+				echo json_encode(array("erro"=>false, "descricao"=>mysql_errno($link), "sql" => $sql));
+			} else {
+				echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+			}
+		} else {
+			echo json_encode(array("erro"=>true, "descricao"=>mysql_errno($link), "sql" => $sql));
+		}
+        //    if ($result) {
+		//echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        //        echo json_encode(array("erro"=>false, "descricao"=>$descricao, "sql" => $sql));
+        //    } 
+        //}
+
+		 mysql_close($link);
+    }
+);
+// READ - 01: Lista Completa
+$app->get('/listarEnderecos', 'auth', function () use ($app) {
+		$link = createDB();
+		$sql = "SELECT  endereco.id,  endereco.logradouro,  endereco.numero,  endereco.complemento,  endereco.bairro,  endereco.cidade_id,  endereco.cep,  endereco.latitude,  endereco.longetude,  endereco.ponto_referencia FROM endereco order by endereco.id";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+			$rows = array();
+			while ($row = mysql_fetch_array($result, MYSQL_BOTH))
+			{
+				$rows[] = $row;
+			}
+			echo json_encode(array("erro"=>"false", "result"=>$rows ));
+        }
+		 mysql_close($link);
+    }
+);
+// READ - 02: item unico
+$app->get('/getEndereco/:idEndereco', 'auth', function ($idEndereco) use ($app) {
+		$idEndereco = (int)$idEndereco;
+		$link = createDB();
+		$sql = "select endereco.id,  endereco.logradouro,  endereco.numero,  endereco.complemento,  endereco.bairro,  endereco.cidade_id,  endereco.cep,  endereco.latitude,  endereco.longetude,  endereco.ponto_referencia from endereco  where endereco.id = ".$idEndereco.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+			$rows = array();
+			while ($row = mysql_fetch_array($result, MYSQL_BOTH))
+			{
+				$rows[] = $row;
+			}
+			echo json_encode(array("erro"=>"false", "result"=>$rows[0] ));
+        }
+		 mysql_close($link);
+    }
+);
+// Update
+$app->post('/alterarPerfilUsuario/:idPerfilUsuario', 'auth', function ($idEndereco) use ($app) {
+        
+        $data = json_decode($app->request()->getBody());
+        $idEndereco = (int)$idEndereco;
+        $logradouro = (isset($data->logradouro)) ? $data->logradouro : "";
+		$numero = (isset($data->numero)) ? $data->numero : "0";
+		$complemento = (isset($data->complemento)) ? $data->complemento : "";
+		$bairro = (isset($data->bairro)) ? $data->bairro : "";
+		$cidade_id = (int)(isset($data->cidade_id)) ? $data->cidade_id : "";
+		$cep = (int)(isset($data->cep)) ? $data->cep : "";
+		$latitude = (int)(isset($data->latitude)) ? $data->latitude : 0;
+		$longetude = (int)(isset($data->longetude)) ? $data->longetude : 0;
+		$ponto_referencia = (isset($data->ponto_referencia)) ? $data->ponto_referencia : "";
+       
+		$link =createDB();
+        
+		$sql = "UPDATE endereco SET endereco.logradouro= '".$logradouro."',  endereco.numero= '".$numero.
+				"',  endereco.complemento= '".$complemento."',  endereco.bairro= '".$bairro."',  endereco.cidade_id= ".$cidade_id.
+				",  endereco.cep= ".$cep.",  endereco.latitude= '".$latitude."',  endereco.longetude= '".$longetude.
+				"',  endereco.ponto_referencia = '".$ponto_referencia."' WHERE  id = ".$idEndereco.";";
+
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                echo json_encode(array("erro"=>false));
+            } 
+        }
+		 mysql_close($link);
+        
+    }
+);
+// Delete
+$app->get('/excluirEndereco/:idEndereco', 'auth', function ($idEndereco) use ($app) {       
+		$idEndereco = (int)$idEndereco;
+        $link =createDB();
+        
+        $sql = "DELETE FROM endereco WHERE id = ".$idEndereco.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                echo json_encode(array("erro"=>false));
+            } 
+        }
+		 mysql_close($link);
+    }
+);
+// fim Crud  Perfil Usuario
+
+
+
 $app->run();
-
-$teste = teste();
-
-"erro"=>true
