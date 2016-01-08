@@ -62,6 +62,18 @@ session_start();
 
     </head>
 	<home>
+		<div class="panel panel-primary" id="mapaPainel">
+			<div class="panel-heading">
+				Endereço: {{Endereco.logradouro}}, nº{{Endereco.numero}}, {{Endereco.complemento}} - {{Endereco.bairro}}. {{Endereco.cidade_id}}
+			</div>
+			<div class="panel-body">
+				<div id="mapa" style="height: 70%; width:  95%;" >
+				</div>
+			</div>
+			<div class="panel-footer">
+				Ponto de Referencia: <p>{{Endereco.ponto_referencia}}</p>
+			</div>
+		</div>
 <div ng-controller="paginaInicialController">       
 			<div id="wrapper">
 				<!-- Navigation -->
@@ -198,7 +210,16 @@ session_start();
 		<script src="js/perfilUsuarioController.js"></script>
 		<script src="js/enderecoController.js"></script>
 
-
+		<!-- Arquivo de inicialização do mapa -->
+		
+		<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDvYiq57FPB-oKd7hdg-J9_eULLMAnfpMc&amp;sensor=false"></script>
+		<script src="js/mapaController.js"></script>
+		<script>
+			var pontoRerefencia = {}
+			
+			$('#mapaPainel').hide();
+			initialize();
+		</script>
 	
 	</home>
 </html>
