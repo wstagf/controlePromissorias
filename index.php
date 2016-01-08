@@ -19,6 +19,12 @@
                         
                     </div>
                 </div>
+
+
+
+
+		
+
                 
                 <div class="row">
                     <div class="col-xs-12 col-sm-7">
@@ -59,5 +65,7 @@
 		<script src="js/angular/angular-toastr.tpls.min.js"></script>
         <script src="js/app.module.js"></script>
         <script src="js/loginController.js"></script>
+
+
     </body>
 </html>
