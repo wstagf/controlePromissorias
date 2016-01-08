@@ -55,6 +55,9 @@ session_start();
 		 * {
 			
 		 }
+		 .modal-dialog {
+			z-index: 99999
+		 }
 		</style>
 
     </head>
@@ -111,25 +114,8 @@ session_start();
 											<a href="#" ng-click="navegar('perfilusuario');">Perfil de usuário</a>
 										</li>
 										<li>
-											<a href="#" ng-click="navegar('escola');">Escolas</a>
+											<a href="#" ng-click="navegar('endereco');">Escolas</a>
 										</li>
-										<li>
-											<a href="#" ng-click="navegar('tipoDocumento');">Tipo de Documentos</a>
-										</li>
-										<li>
-											<a href="#" ng-click="navegar('tipoSituacaoContrato');">Tipo de Situação do Contrato</a>
-										</li>
-										<li>
-											<a href="#" ng-click="navegar('tipoVenda');">Tipo de Vendas</a>
-										</li>
-										<li>
-											<a href="#" ng-click="navegar('supervisor');">Supervisor</a>
-										</li>
-										<li>
-											<a href="#" ng-click="navegar('filial');">Filiais</a>
-										</li>
-										
-
 									</ul>
 									<!-- /.nav-second-level -->
 								</li>
@@ -183,7 +169,7 @@ session_start();
 				</nav>
 				<div id="page-wrapper" >
 					  <div class="slide-animate-container">
-						<div class="slide-animate" ng-include="pagina"></div>
+					  <div class="slide-animate" ng-include="pagina"></div>
 					  </div>
 				</div>
 				<!-- /#page-wrapper -->
@@ -210,13 +196,10 @@ session_start();
 		<script src="js/loginController.js"></script>
         <script src="js/paginaInicialController.js"></script>
 		<script src="js/perfilUsuarioController.js"></script>
-		<script src="js/tipoAgenciaController.js"></script>
-		<script src="js/tipoDocumentoController.js"></script>
-		<script src="js/tipoSituacaoContratoController.js"></script>
-		<script src="js/tipoVendaController.js"></script>
-		<script src="js/supervisorController.js"></script>
-		<script src="js/filialController.js"></script>
-		
+		<script src="js/enderecoController.js"></script>
+
+
+	
 	</home>
 </html>
   
