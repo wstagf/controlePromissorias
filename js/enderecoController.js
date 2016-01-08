@@ -138,8 +138,7 @@ app.controller('enderecoController', function ($scope, $http, toastr) {
     $scope.ExibirEndereco = function (idEndereco) {
         $http.get('api/getEndereco/' + idEndereco)
             .success(function (data) {
-                $scope.Endereco = data.result;
-                console.log($scope.Endereco);
+                pontoRerefencia = data.result;
             })
             .error(function (data) {
                 toastr.error('Falha em editar Endereço', 'Erro');
@@ -151,6 +150,7 @@ app.controller('enderecoController', function ($scope, $http, toastr) {
         $scope.ExibirEndereco(enderecoId);
         console.log(latitude);
         console.log(longetude);
+       
     }
 
 })
