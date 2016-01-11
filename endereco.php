@@ -45,7 +45,7 @@
                                     <td>{{model.cidade_id}}</td>
 									<td>{{model.ponto_referencia}}</td>
                                     <td>
-										<a href="#"  ng-click="buscarEndereco(model.id, model.latitude, model.longetude)" data-toggle="modal" data-target="#myModal"><i class="fa fa-info-circle fa-fw"></i> Localização</a>
+										<a href="#"  ng-click="ExibirEndereco(model.id, model.latitude, model.longetude)" data-toggle="modal" data-target="#myModal"><i class="fa fa-info-circle fa-fw"></i> Localização</a>
 									</td>
                                     <td class="center">
 										<a href="#"  ng-click="editarEndereco(model.id)"><i class="fa fa-info-circle fa-fw"></i> Editar</a>
