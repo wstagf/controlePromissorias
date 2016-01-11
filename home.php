@@ -128,12 +128,7 @@ session_start();
 								<li>
 									<a href="#" ><i class="fa fa-table fa-fw"></i>Cadastros<span class="fa arrow"></span></a>
 									<ul class="nav nav-second-level">
-										<li>
-											<a href="#" ng-click="navegar('usuarios')">Usuários</a>
-										</li>
-										<li>
-											<a href="#" ng-click="navegar('perfilusuario');">Perfil de usuário</a>
-										</li>
+										
 										<li>
 											<a href="#" ng-click="navegar('endereco');">Escolas</a>
 										</li>
@@ -141,28 +136,24 @@ session_start();
 									<!-- /.nav-second-level -->
 								</li>
 								<li>
-									<a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
+									<a href="#"><i class="fa fa-sitemap fa-fw"></i> Cadastros Básicos<span class="fa arrow"></span></a>
 									<ul class="nav nav-second-level">
 										<li>
-											<a href="#">Second Level Item</a>
-										</li>
-										<li>
-											<a href="#">Second Level Item</a>
-										</li>
-										<li>
-											<a href="#">Third Level <span class="fa arrow"></span></a>
+											<a href="#">Seguranca <span class="fa arrow"></span></a>
 											<ul class="nav nav-third-level">
 												<li>
-													<a href="#">Third Level Item</a>
+													<a href="#" ng-click="navegar('usuarios')">Usuários</a>
 												</li>
 												<li>
-													<a href="#">Third Level Item</a>
+													<a href="#" ng-click="navegar('perfilusuario');">Perfil de usuário</a>
 												</li>
+											</ul>
+										</li>
+										<li>
+											<a href="#">Tabelas <span class="fa arrow"></span></a>
+											<ul class="nav nav-third-level">
 												<li>
-													<a href="#">Third Level Item</a>
-												</li>
-												<li>
-													<a href="#">Third Level Item</a>
+													<a href="#" ng-click="navegar('pais');">Países</a>
 												</li>
 											</ul>
 											<!-- /.nav-third-level -->
@@ -218,6 +209,7 @@ session_start();
         <script src="js/paginaInicialController.js"></script>
 		<script src="js/perfilUsuarioController.js"></script>
 		<script src="js/enderecoController.js"></script>
+		<script src="js/paisController.js"></script>
 
 		<!-- Arquivo de inicialização do mapa -->
 		
