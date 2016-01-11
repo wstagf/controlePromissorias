@@ -53,7 +53,7 @@
 							<div class="form-group">
 							<label for="inputEmail3" class="col-sm-2 control-label">Descricao</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="inputEmail3" placeholder="Nome do Perfil" ng-model="PaisAdd.descricao" required>
+								<input type="text" class="form-control" id="inputEmail3" placeholder="Nome do País" ng-model="PaisAdd.descricao" required>
 							</div>
 							</div>
                           
@@ -78,7 +78,7 @@
 							<div class="form-group">
 							<label for="inputEmail3" class="col-sm-2 control-label">Descricao</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="inputEmail3" placeholder="Nome do Perfil" ng-model="Pais.descricao" required>
+								<input type="text" class="form-control" id="inputEmail3" placeholder="Nome do País" ng-model="Pais.descricao" required>
 							</div>
 							</div>
 							
