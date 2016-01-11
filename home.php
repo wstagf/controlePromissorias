@@ -155,6 +155,9 @@ session_start();
 												<li>
 													<a href="#" ng-click="navegar('pais');">Países</a>
 												</li>
+												<li>
+													<a href="#" ng-click="navegar('estado');">Estados</a>
+												</li>
 											</ul>
 											<!-- /.nav-third-level -->
 										</li>
@@ -210,9 +213,9 @@ session_start();
 		<script src="js/perfilUsuarioController.js"></script>
 		<script src="js/enderecoController.js"></script>
 		<script src="js/paisController.js"></script>
+		<script src="js/estadoController.js"></script>
 
-		<!-- Arquivo de inicialização do mapa -->
-		
+		<!-- Arquivo de inicialização do mapa -->		
 		<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDvYiq57FPB-oKd7hdg-J9_eULLMAnfpMc&amp;sensor=false"></script>
 		<script src="js/mapaController.js"></script>
 		<script>
