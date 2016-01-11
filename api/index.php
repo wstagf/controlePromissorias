@@ -434,6 +434,8 @@ $app->post(
 // READ - 01: Lista Completa
 $app->get('/listarPaises', 'auth', function () use ($app) {
 		$link = createDB();
+		
+
 		$sql = "select pais.id, pais.descricao from pais order by pais.id";
 		$result =  mysql_query($sql, $link);
         if (mysql_errno($link) > 0 ) {
@@ -441,10 +443,10 @@ $app->get('/listarPaises', 'auth', function () use ($app) {
         } else {
 			$rows = array();
 			while ($row = mysql_fetch_array($result, MYSQL_BOTH))
-			{
+		{
 				$rows[] = $row;
-			}
-			echo json_encode(array("erro"=>"false", "result"=>$rows ));
+		}
+		echo json_encode(array("erro"=>"false", "result"=>$rows ));
         }
 		 mysql_close($link);
     }
@@ -509,6 +511,112 @@ $app->get('/excluirPais/:idPais', 'auth', function ($idPais) use ($app) {
 );
 // fim Crud   Pais
 
+
+
+
+
+
+// Crud Estado
+$app->post(
+    '/createEstado',
+    function () use ($app) {
+		$data = json_decode($app->request()->getBody());
+        $descricao = (isset($data->descricao)) ? $data->descricao : "";
+		$paisId = (isset($data->paisId)) ? $data->paisId : 1;
+
+        $link =createDB();
+       
+		$sql = "INSERT INTO Estado (descricao, paisId) VALUES ('".$descricao."', ".$paisId.");";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                echo json_encode(array("erro"=>false, "descricao"=>$descricao, "sql" => $sql));
+            } 
+        }
+		 mysql_close($link);
+    }
+);
+// READ - 01: Lista Completa
+$app->get('/listarEstados', 'auth', function () use ($app) {
+		 $link =createDB();
+		
+		$sql = "select estado.id, estado.descricao, estado.paisId, pais.descricao as 'paisName' from estado inner join pais on pais.id = estado.paisId order by estado.id";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+			$rows = array();
+			while ($row = mysql_fetch_array($result, MYSQL_BOTH))
+			{
+				$rows[] = $row;
+			}
+			echo json_encode(array("erro"=>"false", "result"=>$rows ));
+        }
+		 mysql_close($link);
+    }
+);
+// READ - 02: item unico
+$app->get('/getEstado/:idEstado', 'auth', function ($idEstado) use ($app) {
+		$idEstado = (int)$idEstado;
+		$link = createDB();
+		$sql = "select estado.id, estado.descricao, estado.paisId from estado  where estado.id = ".$idEstado.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+			$rows = array();
+			while ($row = mysql_fetch_array($result, MYSQL_BOTH))
+			{
+				$rows[] = $row;
+			}
+			echo json_encode(array("erro"=>"false", "result"=>$rows[0] ));
+        }
+		 mysql_close($link);
+    }
+);
+// Update
+$app->post('/alterarEstado/:idEstado', 'auth', function ($idEstado) use ($app) {
+        
+        $data = json_decode($app->request()->getBody());
+        $idEstado = (int)$idEstado;
+        $descricao = (isset($data->descricao)) ? $data->descricao : "";
+		$paisId = (isset($data->paisId)) ? $data->paisId : 1;
+       
+		$link =createDB();
+        
+		$sql = "UPDATE estado  SET descricao = '".$descricao."', paisId =".$paisId."  WHERE  id = ".$idEstado.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                echo json_encode(array("erro"=>false));
+            } 
+        }
+		 mysql_close($link);
+        
+    }
+);
+// Delete
+$app->get('/excluirEstado/:idEstado', 'auth', function ($idEstado) use ($app) {       
+		$idEstado = (int)$idEstado;
+        $link =createDB();
+        
+        $sql = "DELETE FROM estado WHERE id = ".$idEstado.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                echo json_encode(array("erro"=>false));
+            } 
+        }
+		 mysql_close($link);
+    }
+);
+// fim Crud   Estado
 
 
 
