@@ -63,15 +63,22 @@ session_start();
     </head>
 	<home>
 		<div class="panel panel-primary" id="mapaPainel">
-			<div class="panel-heading">
-				Endereço: {{Endereco.logradouro}}, nº{{Endereco.numero}}, {{Endereco.complemento}} - {{Endereco.bairro}}. {{Endereco.cidade_id}}
+			<div class="panel-heading" >
+				<div class="row" style="padding: 10px 0 0 0">
+					<div class="col-lg-8 col-md-10">
+						
+					</div>
+					<div class="col-lg-3 col-md-2">
+						<a href="#" onclick="fechaMapa()"><i class="fa fa-arrow-left fa-fw" style="color:#FFF"></i><span style="color:#FFF">Voltar</span></a>	
+					</div>
+				</div>
 			</div>
 			<div class="panel-body">
 				<div id="mapa" style="height: 70%; width:  95%;" >
 				</div>
 			</div>
 			<div class="panel-footer">
-				Ponto de Referencia: <p>{{Endereco.ponto_referencia}}</p>
+				
 			</div>
 		</div>
 <div ng-controller="paginaInicialController">       
@@ -85,7 +92,9 @@ session_start();
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand">Promissoria Web - Sistema de Controle de Serviços Fotograficos e Promissorias</a>
+						<a class="navbar-brand">
+						
+								Promissoria Web - Sistema de Controle de Serviços Fotograficos e Promissorias</a>
 					</div>
 					<!-- /.navbar-header -->
 
@@ -215,10 +224,7 @@ session_start();
 		<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDvYiq57FPB-oKd7hdg-J9_eULLMAnfpMc&amp;sensor=false"></script>
 		<script src="js/mapaController.js"></script>
 		<script>
-			var pontoRerefencia = {}
-			
 			$('#mapaPainel').hide();
-			initialize();
 		</script>
 	
 	</home>
