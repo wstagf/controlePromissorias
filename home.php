@@ -128,9 +128,8 @@ session_start();
 								<li>
 									<a href="#" ><i class="fa fa-table fa-fw"></i>Cadastros<span class="fa arrow"></span></a>
 									<ul class="nav nav-second-level">
-										
 										<li>
-											<a href="#" ng-click="navegar('endereco');">Escolas</a>
+											<a href="#" ng-click="navegar('escola');">Escolas</a>
 										</li>
 									</ul>
 									<!-- /.nav-second-level -->
@@ -153,10 +152,16 @@ session_start();
 											<a href="#">Tabelas <span class="fa arrow"></span></a>
 											<ul class="nav nav-third-level">
 												<li>
-													<a href="#" ng-click="navegar('pais');">Países</a>
+													<a href="#" ng-click="navegar('cidade');">Cidades</a>
+												</li>
+												<li>
+													<a href="#" ng-click="navegar('endereco');">Endereço</a>
 												</li>
 												<li>
 													<a href="#" ng-click="navegar('estado');">Estados</a>
+												</li>
+												<li>
+													<a href="#" ng-click="navegar('pais');">Países</a>
 												</li>
 											</ul>
 											<!-- /.nav-third-level -->
@@ -214,6 +219,7 @@ session_start();
 		<script src="js/enderecoController.js"></script>
 		<script src="js/paisController.js"></script>
 		<script src="js/estadoController.js"></script>
+		<script src="js/cidadeController.js"></script>
 
 		<!-- Arquivo de inicialização do mapa -->		
 		<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDvYiq57FPB-oKd7hdg-J9_eULLMAnfpMc&amp;sensor=false"></script>
