@@ -212,6 +212,9 @@ session_start();
 
 		<script src="js/angular/angular.min.js"></script>
 		<script src="js/angular/angular-toastr.tpls.min.js"></script>
+		<script src="js/angular/angular-file-upload.min.js"></script>
+		<script src="js/angular/loading-bar.min.js"></script>
+
         <script src="js/app.module.js"></script>
 		<script src="js/loginController.js"></script>
         <script src="js/paginaInicialController.js"></script>
@@ -220,6 +223,7 @@ session_start();
 		<script src="js/paisController.js"></script>
 		<script src="js/estadoController.js"></script>
 		<script src="js/cidadeController.js"></script>
+		<script src="js/escolaController.js"></script>
 
 		<!-- Arquivo de inicialização do mapa -->		
 		<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDvYiq57FPB-oKd7hdg-J9_eULLMAnfpMc&amp;sensor=false"></script>
