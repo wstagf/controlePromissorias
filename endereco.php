@@ -42,7 +42,7 @@
                                     <td>{{model.id}}</td>
                                     <td>{{model.logradouro}}, nº{{model.numero}}, {{model.complemento}} </td>
                                     <td>{{model.bairro}}</td>
-                                    <td>{{model.cidade_id}}</td>
+                                    <td>{{model.cidadeName}}</td>
 									<td>{{model.ponto_referencia}}</td>
                                     <td>
 										<a href="#"  ng-click="ExibirEndereco(model.id, model.latitude, model.longetude)" data-toggle="modal" data-target="#myModal"><i class="fa fa-info-circle fa-fw"></i> Localização</a>
@@ -80,7 +80,9 @@
 								</div>
 								<div class="col-sm-4">
 									<label for="inputEmail3" class="control-label">Cidade*</label>
-									<input type="text" class="form-control" id="inputAdd_cidade_id" placeholder="Cidade" ng-model="EnderecoAdd.cidade_id" required>
+									<select ng-model="EnderecoAdd.cidade_id"  class="form-control">
+									       <option ng-repeat="cidade in listaCidades" value="{{cidade.id}}" > {{cidade.descricao}} </option>
+								    </select>
 								</div>
 								<div class="col-sm-2">
 									<label for="inputEmail3" class="control-label">Cep</label>
@@ -141,7 +143,9 @@
 								</div>
 								<div class="col-sm-4">
 									<label for="inputEmail3" class="control-label">Cidade*</label>
-									<input type="text" class="form-control" id="input_cidade_id" placeholder="Cidade" ng-model="Endereco.cidade_id" required>
+									<select ng-model="Endereco.cidade_id"  class="form-control">
+									       <option ng-repeat="cidade in listaCidades" value="{{cidade.id}}" > {{cidade.descricao}} </option>
+								    </select>
 								</div>
 								<div class="col-sm-2">
 									<label for="inputEmail3" class="control-label">Cep</label>
