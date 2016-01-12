@@ -319,7 +319,7 @@ $app->post(
 // READ - 01: Lista Completa
 $app->get('/listarEnderecos', 'auth', function () use ($app) {
 		$link = createDB();
-		$sql = "SELECT  endereco.id,  endereco.logradouro,  endereco.numero,  endereco.complemento,  endereco.bairro,  endereco.cidade_id,  endereco.cep,  endereco.latitude,  endereco.longetude,  endereco.ponto_referencia FROM endereco order by endereco.id";
+		$sql = "SELECT  endereco.id,  endereco.logradouro,  endereco.numero,  endereco.complemento,  endereco.bairro,  endereco.cidade_id, cidade.descricao as 'cidadeName',  endereco.cep,  endereco.latitude,  endereco.longetude,  endereco.ponto_referencia FROM endereco  inner join cidade on cidade.id = endereco.cidade_id order by endereco.id";
 		$result =  mysql_query($sql, $link);
         if (mysql_errno($link) > 0 ) {
 			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
@@ -353,8 +353,28 @@ $app->get('/getEndereco/:idEndereco', 'auth', function ($idEndereco) use ($app) 
 		 mysql_close($link);
     }
 );
+
+// READ - 01: Lista Completa
+$app->get('/listarMaxIdEnderecos', 'auth', function () use ($app) {
+		$link = createDB();
+		$sql = "select max(id) as maxId from endereco";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+			$rows = array();
+			while ($row = mysql_fetch_array($result, MYSQL_BOTH))
+			{
+				$rows[] = $row;
+			}
+			echo json_encode(array("erro"=>"false", "result"=>$rows ));
+        }
+		 mysql_close($link);
+    }
+);
+
 // Update
-$app->post('/alterarPerfilUsuario/:idPerfilUsuario', 'auth', function ($idEndereco) use ($app) {
+$app->post('/alterarEndereco/:idEndereco', 'auth', function ($idEndereco) use ($app) {
         
         $data = json_decode($app->request()->getBody());
         $idEndereco = (int)$idEndereco;
@@ -621,5 +641,321 @@ $app->get('/excluirEstado/:idEstado', 'auth', function ($idEstado) use ($app) {
 
 
 
+
+// Crud cidade
+$app->post(
+    '/createCidade',
+    function () use ($app) {
+		$data = json_decode($app->request()->getBody());
+        $descricao = (isset($data->descricao)) ? $data->descricao : "";
+		$estadoId = (isset($data->estadoId)) ? $data->estadoId : 1;
+
+        $link =createDB();
+       
+		$sql = "INSERT INTO cidade (descricao, estadoId) VALUES ('".$descricao."', ".$estadoId.");";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                echo json_encode(array("erro"=>false, "descricao"=>$descricao, "sql" => $sql));
+            } 
+        }
+		 mysql_close($link);
+    }
+);
+// READ - 01: Lista Completa
+$app->get('/listarCidades', 'auth', function () use ($app) {
+		 $link =createDB();
+		
+		$sql = "select cidade.id, cidade.descricao, cidade.estadoId, estado.descricao as 'estadoName' from cidade inner join estado on estado.id = cidade.estadoId order by estado.id";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+			$rows = array();
+			while ($row = mysql_fetch_array($result, MYSQL_BOTH))
+			{
+				$rows[] = $row;
+			}
+			echo json_encode(array("erro"=>"false", "result"=>$rows ));
+        }
+		 mysql_close($link);
+    }
+);
+// READ - 02: item unico
+$app->get('/getCidade/:idCidade', 'auth', function ($idCidade) use ($app) {
+		$idCidade = (int)$idCidade;
+		$link = createDB();
+		$sql = "select cidade.id, cidade.descricao, cidade.estadoId from cidade  where cidade.id = ".$idCidade.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+			$rows = array();
+			while ($row = mysql_fetch_array($result, MYSQL_BOTH))
+			{
+				$rows[] = $row;
+			}
+			echo json_encode(array("erro"=>"false", "result"=>$rows[0] ));
+        }
+		 mysql_close($link);
+    }
+);
+// Update
+$app->post('/alterarCidade/:idCidade', 'auth', function ($idCidade) use ($app) {
+        
+        $data = json_decode($app->request()->getBody());
+        $idCidade = (int)$idCidade;
+        $descricao = (isset($data->descricao)) ? $data->descricao : "";
+		$estadoId = (isset($data->estadoId)) ? $data->estadoId : 1;
+       
+		$link =createDB();
+        
+		$sql = "UPDATE cidade  SET descricao = '".$descricao."', estadoId =".$estadoId."  WHERE  id = ".$idCidade.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                echo json_encode(array("erro"=>false));
+            } 
+        }
+		 mysql_close($link);
+        
+    }
+);
+// Delete
+$app->get('/excluirCidade/:idCidade', 'auth', function ($idCidade) use ($app) {       
+		$idCidade = (int)$idCidade;
+        $link =createDB();
+        
+        $sql = "DELETE FROM cidade WHERE id = ".$idCidade.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                echo json_encode(array("erro"=>false));
+            } 
+        }
+		 mysql_close($link);
+    }
+);
+// fim Crud cidade
+
+
+
+
+// Crud escola
+$app->post(
+    '/createEscola',
+    function () use ($app) {
+		$data = json_decode($app->request()->getBody());
+        $descricao = (isset($data->descricao)) ? $data->descricao : "";
+		$dddtelefone = (isset($data->dddtelefone)) ? $data->dddtelefone : 1;
+		$numtelefone = (isset($data->numtelefone)) ? $data->numtelefone : 1;
+		$enderecoId = (isset($data->enderecoId)) ? $data->enderecoId : 1;
+		$observacoes = (isset($data->observacoes)) ? $data->observacoes : "";
+        $link =createDB();
+		$sql = "INSERT INTO escola (descricao, dddtelefone, numtelefone, enderecoId, observacoes) VALUES ('".$descricao."', ".$dddtelefone.", ".$numtelefone.", ".$enderecoId.", '".$observacoes."');";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                echo json_encode(array("erro"=>false, "descricao"=>$descricao, "sql" => $sql));
+            } 
+        }
+		 mysql_close($link);
+    }
+);
+// READ - 01: Lista Completa
+$app->get('/listarEscolas', 'auth', function () use ($app) {
+		 $link =createDB();
+		$sql = "select escola.id, escola.descricao, escola.dddtelefone, escola.numtelefone, escola.enderecoId, escola.observacoes, endereco.logradouro as 'enderecoLogradouro',  endereco.numero as 'enderecoNumero', endereco.complemento as 'enderecoComplemento',  endereco.bairro as 'enderecoBairro', endereco.cidade_id as 'enderecoCidadeId', cidade.descricao as 'enderecoCidadeName',  endereco.cep as 'enderecoCep', endereco.latitude as 'enderecoLatitude',  endereco.longetude as 'enderecoLongetude', endereco.ponto_referencia as 'enderecoPontoReferencia' from escola inner join endereco on escola.enderecoId = endereco.id inner join cidade on endereco.cidade_id = cidade.id order by escola.id";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+			$rows = array();
+			while ($row = mysql_fetch_array($result, MYSQL_BOTH))
+			{
+				$rows[] = $row;
+			}
+			echo json_encode(array("erro"=>"false", "result"=>$rows ));
+        }
+		 mysql_close($link);
+    }
+);
+// READ - 02: item unico
+$app->get('/getEscola/:idEscola', 'auth', function ($idEscola) use ($app) {
+		$idEscola = (int)$idEscola;
+		$link = createDB();
+		$sql = "select escola.id, escola.descricao, escola.dddtelefone, escola.numtelefone, escola.enderecoId, escola.observacoes, endereco.logradouro as 'enderecoLogradouro',  endereco.numero as 'enderecoNumero', endereco.complemento as 'enderecoComplemento',  endereco.bairro as 'enderecoBairro', endereco.cidade_id as 'enderecoCidadeId', cidade.descricao as 'enderecoCidadeName',  endereco.cep as 'enderecoCep', endereco.latitude as 'enderecoLatitude',  endereco.longetude as 'enderecoLongetude', endereco.ponto_referencia as 'enderecoPontoReferencia' from escola inner join endereco on escola.enderecoId = endereco.id inner join cidade on endereco.cidade_id = cidade.id  where escola.id = ".$idEscola.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+			$rows = array();
+			while ($row = mysql_fetch_array($result, MYSQL_BOTH))
+			{
+				$rows[] = $row;
+			}
+			echo json_encode(array("erro"=>"false", "result"=>$rows[0] ));
+        }
+		 mysql_close($link);
+    }
+);
+// Update
+$app->post('/alterarEscola/:idEscola', 'auth', function ($idEscola) use ($app) {
+        
+        $data = json_decode($app->request()->getBody());
+        $idEscola = (int)$idEscola;
+        $descricao = (isset($data->descricao)) ? $data->descricao : "";
+		$dddtelefone = (isset($data->dddtelefone)) ? $data->dddtelefone : 0;
+		$numtelefone = (isset($data->numtelefone)) ? $data->numtelefone : 0;
+		$observacoes = (isset($data->observacoes)) ? $data->observacoes : "";
+
+		$link =createDB();
+        
+		$sql = "UPDATE escola  SET descricao = '".$descricao."', dddtelefone =".$dddtelefone.", numtelefone =".$numtelefone.", observacoes ='".$observacoes."'  WHERE  id = ".$idEscola.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                echo json_encode(array("erro"=>false));
+            } 
+        }
+		 mysql_close($link);
+        
+    }
+);
+// Delete
+$app->get('/excluirEscola/:idEscola', 'auth', function ($idEscola) use ($app) {       
+		$idEscola = (int)$idEscola;
+        $link =createDB();
+        
+        $sql = "DELETE FROM escola WHERE id = ".$idEscola.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                echo json_encode(array("erro"=>false));
+            } 
+        }
+		 mysql_close($link);
+    }
+);
+// fim Crud escola
+
+
+
+
+// Crud Pessoa
+$app->post(
+    '/createPessoa',
+    function () use ($app) {
+		$data = json_decode($app->request()->getBody());
+        $cpf_cnpj = (isset($data->cpf_cnpj)) ? $data->cpf_cnpj : "";
+		$razao_social= (isset($data->razao_social)) ? $data->razao_social : "";
+		$nome_fantasia = (isset($data->nome_fantasia)) ? $data->nome_fantasia : "";
+		$endereco_id = (isset($data->endereco_id)) ? $data->endereco_id : 1;
+		
+        $link =createDB();
+		$sql = "INSERT INTO pessoa (cpf_cnpj, razao_social, nome_fantasia, endereco_id) VALUES ('".$cpf_cnpj."', '".$razao_social."', '".$nome_fantasia."', ".$endereco_id.");";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			 echo json_encode(array("erro"=>true, "descricao"=>"vai a merda", "cpf" => $cpf_cnpj, "razao_social" => $razao_social, "nome_fantasia"=>$nome_fantasia, "endereco_id"=>$endereco_id, "sql" => $sql));
+        } else {
+            if ($result) {
+                 echo json_encode(array("erro"=>false, "descricao"=>"vai a merda", "cpf" => $cpf_cnpj, "razao_social" => $razao_social, "nome_fantasia"=>$nome_fantasia, "endereco_id"=>$endereco_id, "sql" => $sql));
+            } 
+        }
+		mysql_close($link);
+    }
+);
+// READ - 01: Lista Completa
+$app->get('/listarPessoas', 'auth', function () use ($app) {
+		 $link =createDB();
+		$sql = "SELECT  pessoa.id,  pessoa.cpf_cnpj,  pessoa.razao_social,  pessoa.nome_fantasia,  pessoa.endereco_id, endereco.logradouro as 'enderecoLogradouro',  endereco.numero as 'enderecoNumero', endereco.complemento as 'enderecoComplemento',  endereco.bairro as 'enderecoBairro', endereco.cidade_id as 'enderecoCidadeId', cidade.descricao as 'enderecoCidadeName',  endereco.cep as 'enderecoCep', endereco.latitude as 'enderecoLatitude',  endereco.longetude as 'enderecoLongetude', endereco.ponto_referencia as 'enderecoPontoReferencia' FROM controlepromissoria.pessoa  inner join endereco on  pessoa.endereco_id = endereco.id inner join cidade on endereco.cidade_id = cidade.id order by pessoa.id ";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+			$rows = array();
+			while ($row = mysql_fetch_array($result, MYSQL_BOTH))
+			{
+				$rows[] = $row;
+			}
+			echo json_encode(array("erro"=>"false", "result"=>$rows ));
+        }
+		 mysql_close($link);
+    }
+);
+// READ - 02: item unico
+$app->get('/getPessoa/:idPessoa', 'auth', function ($idPessoa) use ($app) {
+		$idPessoa = (int)$idPessoa;
+		$link = createDB();
+		$sql = "SELECT  pessoa.id,  pessoa.cpf_cnpj,  pessoa.razao_social,  pessoa.nome_fantasia,  pessoa.endereco_id, endereco.logradouro as 'enderecoLogradouro',  endereco.numero as 'enderecoNumero', endereco.complemento as 'enderecoComplemento',  endereco.bairro as 'enderecoBairro', endereco.cidade_id as 'enderecoCidadeId', cidade.descricao as 'enderecoCidadeName',  endereco.cep as 'enderecoCep', endereco.latitude as 'enderecoLatitude',  endereco.longetude as 'enderecoLongetude', endereco.ponto_referencia as 'enderecoPontoReferencia' FROM controlepromissoria.pessoa  inner join endereco on  pessoa.endereco_id = endereco.id inner join cidade on endereco.cidade_id = cidade.id  where pessoa.id = ".$idPessoa.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+			$rows = array();
+			while ($row = mysql_fetch_array($result, MYSQL_BOTH))
+			{
+				$rows[] = $row;
+			}
+			echo json_encode(array("erro"=>"false", "result"=>$rows[0] ));
+        }
+		 mysql_close($link);
+    }
+);
+// Update
+$app->post('/alterarPessoa/:idPessoa', 'auth', function ($idPessoa) use ($app) {
+        
+        $data = json_decode($app->request()->getBody());
+        $idPessoa = (int)$idPessoa;
+        $cpf_cnpj = (isset($data->cpf_cnpj)) ? $data->cpf_cnpj : "";
+		$razao_social = (isset($data->razao_social)) ? $data->razao_social : "";
+		$nome_fantasia = (isset($data->nome_fantasia)) ? $data->nome_fantasia : "";
+		$endereco_id = (isset($data->endereco_id)) ? $data->endereco_id : 0;
+
+		$link =createDB();
+        
+		$sql = "UPDATE pessoa  SET cpf_cnpj = '".$cpf_cnpj."', razao_social = '".$razao_social."', nome_fantasia ='".$nome_fantasia."', endereco_id =".$endereco_id."  WHERE  id = ".$idPessoa.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                echo json_encode(array("erro"=>false));
+            } 
+        }
+		 mysql_close($link);
+        
+    }
+);
+// Delete
+$app->get('/excluirPessoa/:idPessoa', 'auth', function ($idPessoa) use ($app) {       
+		$idPessoa = (int)$idPessoa;
+        $link =createDB();
+        
+        $sql = "DELETE FROM pessoa WHERE id = ".$idPessoa.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                echo json_encode(array("erro"=>false, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+            } 
+        }
+		 mysql_close($link);
+    }
+);
+// fim Crud escola
 
 $app->run();
