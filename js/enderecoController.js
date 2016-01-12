@@ -135,7 +135,6 @@ app.controller('enderecoController', function ($scope, $http, toastr) {
             });
     };
 
-    $scope.listarEnderecos();
     
     $scope.ExibirEndereco = function (idEndereco, latitude, longetude) {
         $http.get('api/getEndereco/' + idEndereco)
@@ -172,6 +171,8 @@ app.controller('enderecoController', function ($scope, $http, toastr) {
             });
     };
 
+
+    $scope.listarEnderecos();
     $scope.listarCidades();
 
 })
