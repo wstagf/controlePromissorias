@@ -958,4 +958,124 @@ $app->get('/excluirPessoa/:idPessoa', 'auth', function ($idPessoa) use ($app) {
 );
 // fim Crud escola
 
+
+
+
+// Crud Telefone 
+
+/*
+$app->post(
+    '/createPessoa',
+    function () use ($app) {
+		$data = json_decode($app->request()->getBody());
+        $cpf_cnpj = (isset($data->cpf_cnpj)) ? $data->cpf_cnpj : "";
+		$razao_social= (isset($data->razao_social)) ? $data->razao_social : "";
+		$nome_fantasia = (isset($data->nome_fantasia)) ? $data->nome_fantasia : "";
+		$endereco_id = (isset($data->endereco_id)) ? $data->endereco_id : 1;
+		
+        $link =createDB();
+		$sql = "INSERT INTO pessoa (cpf_cnpj, razao_social, nome_fantasia, endereco_id) VALUES ('".$cpf_cnpj."', '".$razao_social."', '".$nome_fantasia."', ".$endereco_id.");";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			 echo json_encode(array("erro"=>true, "descricao"=>"vai a merda", "cpf" => $cpf_cnpj, "razao_social" => $razao_social, "nome_fantasia"=>$nome_fantasia, "endereco_id"=>$endereco_id, "sql" => $sql));
+        } else {
+            if ($result) {
+                 echo json_encode(array("erro"=>false, "descricao"=>"vai a merda", "cpf" => $cpf_cnpj, "razao_social" => $razao_social, "nome_fantasia"=>$nome_fantasia, "endereco_id"=>$endereco_id, "sql" => $sql));
+            } 
+        }
+		mysql_close($link);
+    }
+);
+
+*/
+
+
+// READ - 01: Lista Completa
+$app->get('/listarTelefones', 'auth', function () use ($app) {
+		 $link =createDB();
+		$sql = "SELECT  id,  ddd,  numero,  ramail,  observacao,  pessoa_id FROM telefone order by telefone.id ";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+			$rows = array();
+			while ($row = mysql_fetch_array($result, MYSQL_BOTH))
+			{
+				$rows[] = $row;
+			}
+			echo json_encode(array("erro"=>"false", "result"=>$rows ));
+        }
+		 mysql_close($link);
+    }
+);
+
+
+// READ - 02: item unico
+$app->get('/getTelefone/:idTelefone', 'auth', function ($idTelefone) use ($app) {
+		$idTelefone = (int)$idTelefone;
+		$link = createDB();
+		$sql = "SELECT  id,  ddd,  numero,  ramail,  observacao,  pessoa_id FROM telefone where id = ".$idTelefone.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+			$rows = array();
+			while ($row = mysql_fetch_array($result, MYSQL_BOTH))
+			{
+				$rows[] = $row;
+			}
+			echo json_encode(array("erro"=>"false", "result"=>$rows[0] ));
+        }
+		 mysql_close($link);
+    }
+);
+
+/*
+// Update
+$app->post('/alterarPessoa/:idPessoa', 'auth', function ($idPessoa) use ($app) {
+        
+        $data = json_decode($app->request()->getBody());
+        $idPessoa = (int)$idPessoa;
+        $cpf_cnpj = (isset($data->cpf_cnpj)) ? $data->cpf_cnpj : "";
+		$razao_social = (isset($data->razao_social)) ? $data->razao_social : "";
+		$nome_fantasia = (isset($data->nome_fantasia)) ? $data->nome_fantasia : "";
+		$endereco_id = (isset($data->endereco_id)) ? $data->endereco_id : 0;
+
+		$link =createDB();
+        
+		$sql = "UPDATE pessoa  SET cpf_cnpj = '".$cpf_cnpj."', razao_social = '".$razao_social."', nome_fantasia ='".$nome_fantasia."', endereco_id =".$endereco_id."  WHERE  id = ".$idPessoa.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                echo json_encode(array("erro"=>false));
+            } 
+        }
+		 mysql_close($link);
+        
+    }
+);
+// Delete
+$app->get('/excluirPessoa/:idPessoa', 'auth', function ($idPessoa) use ($app) {       
+		$idPessoa = (int)$idPessoa;
+        $link =createDB();
+        
+        $sql = "DELETE FROM pessoa WHERE id = ".$idPessoa.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                echo json_encode(array("erro"=>false, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+            } 
+        }
+		 mysql_close($link);
+    }
+);
+// fim Crud escola
+
+*/
+
+
 $app->run();
