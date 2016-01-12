@@ -6,6 +6,7 @@ app.controller('enderecoController', function ($scope, $http, toastr) {
         complemento: '',
         bairro: '',
         cidade_id: 0,
+        cidadeName: '',
         cep: 0,
         latitude: 0,
         longetude: 0,
@@ -19,6 +20,7 @@ app.controller('enderecoController', function ($scope, $http, toastr) {
         complemento: '',
         bairro: '',
         cidade_id: 0,
+        cidadeName: '',
         cep: 0,
         latitude: 0,
         longetude: 0,
@@ -151,5 +153,25 @@ app.controller('enderecoController', function ($scope, $http, toastr) {
         }
         
     };
+
+
+    $scope.listaCidades = {};
+    $scope.listarCidades = function () {
+        $http.get('api/listarCidades')
+            .success(function (data) {
+                if (data.result.length == 0) {
+                    toastr.info('Não foram encontrados registos', 'Informação');
+                } else {
+                    $scope.listaCidades = data.result;
+                }
+            })
+            .error(function (data) {
+                //alert("Falha em obter usuarios");
+                console.log(data);
+                toastr.error('Erro ao localizar Usuarios', 'Erro');
+            });
+    };
+
+    $scope.listarCidades();
 
 })
