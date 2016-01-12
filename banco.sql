@@ -13,19 +13,17 @@
 -- Copiando estrutura para tabela controlepromissoria.cidade
 DROP TABLE IF EXISTS `cidade`;
 CREATE TABLE IF NOT EXISTS `cidade` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `descricao` varchar(50) NOT NULL,
-  `estado_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `descricao` (`descricao`,`estado_id`),
-  KEY `FK_cidade_estado_id` (`estado_id`),
-  CONSTRAINT `FK_cidade_estado_id` FOREIGN KEY (`estado_id`) REFERENCES `estado` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  `estadoId` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Copiando dados para a tabela controlepromissoria.cidade: ~1 rows (aproximadamente)
+-- Copiando dados para a tabela controlepromissoria.cidade: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `cidade` DISABLE KEYS */;
-INSERT INTO `cidade` (`id`, `descricao`, `estado_id`) VALUES
-	(1, 'Goiânia', 1);
+INSERT INTO `cidade` (`id`, `descricao`, `estadoId`) VALUES
+	(1, 'Goiania2', 1),
+	(2, 'Aparecida de Goiania', 1);
 /*!40000 ALTER TABLE `cidade` ENABLE KEYS */;
 
 
@@ -57,23 +55,33 @@ CREATE TABLE IF NOT EXISTS `endereco` (
   `logradouro` varchar(50) NOT NULL,
   `numero` varchar(50) DEFAULT NULL,
   `complemento` varchar(50) DEFAULT NULL,
-  `bairro` varchar(50) DEFAULT NULL,
+  `bairro` varchar(50) NOT NULL,
   `cidade_id` int(11) NOT NULL,
   `cep` int(11) DEFAULT NULL,
-  `latitude` int(11) DEFAULT NULL,
-  `longetude` int(11) DEFAULT NULL,
+  `latitude` varchar(50) DEFAULT NULL,
+  `longetude` varchar(50) DEFAULT NULL,
   `ponto_referencia` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `ponto_referencia` (`ponto_referencia`),
-  KEY `FK_endereco_cidade_id` (`cidade_id`),
-  CONSTRAINT `FK_endereco_cidade_id` FOREIGN KEY (`cidade_id`) REFERENCES `cidade` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  KEY `FK_endereco_cidade_id` (`cidade_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
--- Copiando dados para a tabela controlepromissoria.endereco: ~2 rows (aproximadamente)
+-- Copiando dados para a tabela controlepromissoria.endereco: ~13 rows (aproximadamente)
 /*!40000 ALTER TABLE `endereco` DISABLE KEYS */;
 INSERT INTO `endereco` (`id`, `logradouro`, `numero`, `complemento`, `bairro`, `cidade_id`, `cep`, `latitude`, `longetude`, `ponto_referencia`) VALUES
-	(1, 'Rua A', '0', 'Qd. 1 Lt. 17', 'Garavelo', 1, 74000000, -16769142, -49327948, 'Escola Estadual Maria Rosilda Rodrigues'),
-	(2, 'Rua A', '0', 'Qd. 1 Lt. 25', 'Garavelo', 1, 74000000, -16768948, -49327192, 'Supermercado Garavelo');
+	(1, '18-D', '0', 'Qd. 167 Lt. 17', 'Garavelo', 2, 74930360, '-16.768948', '-49.327192', 'Escola Estadual Maria Rosilda Rodrigues'),
+	(2, '18-D', '0', 'Qd. 185 Lt. 25 Editado', 'Garavelo', 1, 74930360, '-16.768948', '-49.327192', 'Supermercado Garavelo'),
+	(3, 'Outra Escola', '1', '111', 'Oriente Vile', 1, 74930360, '-16.7511237', '-49.3558132', 'Supermercado Garavelo'),
+	(4, 'rua nova', '0', 'qd 8 lt 9', 'bairro', 2, 74930360, '0', '0', 'ponto ref'),
+	(5, '1', '1', '1', '1', 2, 1, '1', '1', '1'),
+	(6, '1', '1', '1', '1', 1, 1, '1', '1', '1'),
+	(7, '1', '1', '1', '1', 1, 1, '1', '1', '1'),
+	(8, '2', '2', '2', '2', 2, 2, '2', '2', '2'),
+	(9, 'a', '1', 'a', 'a', 2, 1, '1', '1', 'a'),
+	(10, '1', '1', '1', '1', 2, 1, '1', '1', '1'),
+	(11, 'a', '1', 'a', '1', 2, 1, '1', '1', '1'),
+	(12, 'a', '2', 'a', 'a', 2, 32, '4', '4', '3'),
+	(13, 'rua a', '3', 'compl 4', 'bair', 2, 887, '1', '1', 'ponto');
 /*!40000 ALTER TABLE `endereco` ENABLE KEYS */;
 
 
@@ -82,20 +90,22 @@ DROP TABLE IF EXISTS `escola`;
 CREATE TABLE IF NOT EXISTS `escola` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `descricao` varchar(50) DEFAULT NULL,
-  `ddd_telefone` int(11) DEFAULT NULL,
-  `num_telefone` int(11) DEFAULT NULL,
-  `endereco_id` int(11) NOT NULL,
+  `dddtelefone` int(11) DEFAULT NULL,
+  `numtelefone` int(11) DEFAULT NULL,
+  `enderecoId` int(11) NOT NULL,
   `observacoes` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `descricao` (`descricao`),
-  KEY `FK_escola_endereco_id` (`endereco_id`),
-  CONSTRAINT `FK_escola_endereco_id` FOREIGN KEY (`endereco_id`) REFERENCES `endereco` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  KEY `FK_escola_endereco_id` (`enderecoId`),
+  CONSTRAINT `FK_escola_endereco_id` FOREIGN KEY (`enderecoId`) REFERENCES `endereco` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
--- Copiando dados para a tabela controlepromissoria.escola: ~1 rows (aproximadamente)
+-- Copiando dados para a tabela controlepromissoria.escola: ~3 rows (aproximadamente)
 /*!40000 ALTER TABLE `escola` DISABLE KEYS */;
-INSERT INTO `escola` (`id`, `descricao`, `ddd_telefone`, `num_telefone`, `endereco_id`, `observacoes`) VALUES
-	(1, 'Escola Castelo dos Gênios', 62, 30303030, 2, 'Diretora Chata');
+INSERT INTO `escola` (`id`, `descricao`, `dddtelefone`, `numtelefone`, `enderecoId`, `observacoes`) VALUES
+	(1, 'Escola Castelo dos Genios', 62, 30303030, 2, 'Diretora Chata muito doido'),
+	(2, 'Escola Castelo dos Genios', 62, 30303030, 2, 'Diretora Chata'),
+	(4, 'nome escola', 11, 222, 13, 'observa');
 /*!40000 ALTER TABLE `escola` ENABLE KEYS */;
 
 
@@ -103,18 +113,16 @@ INSERT INTO `escola` (`id`, `descricao`, `ddd_telefone`, `num_telefone`, `endere
 DROP TABLE IF EXISTS `estado`;
 CREATE TABLE IF NOT EXISTS `estado` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `descricao` varchar(50) NOT NULL,
-  `pais_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `descricao` (`descricao`),
-  KEY `FK_estado_pais_id` (`pais_id`),
-  CONSTRAINT `FK_estado_pais_id` FOREIGN KEY (`pais_id`) REFERENCES `pais` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  `descricao` varchar(50) NOT NULL DEFAULT '0',
+  `paisId` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
--- Copiando dados para a tabela controlepromissoria.estado: ~1 rows (aproximadamente)
+-- Copiando dados para a tabela controlepromissoria.estado: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `estado` DISABLE KEYS */;
-INSERT INTO `estado` (`id`, `descricao`, `pais_id`) VALUES
-	(1, 'Goiás', 1);
+INSERT INTO `estado` (`id`, `descricao`, `paisId`) VALUES
+	(1, 'Goias', 1),
+	(2, 'Florida', 2);
 /*!40000 ALTER TABLE `estado` ENABLE KEYS */;
 
 
@@ -140,7 +148,7 @@ CREATE TABLE IF NOT EXISTS `historico` (
   CONSTRAINT `FK_historico_situacaopromissoria_original_id` FOREIGN KEY (`situacaopromissoria_original_id`) REFERENCES `situacaopromissoria` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Copiando dados para a tabela controlepromissoria.historico: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela controlepromissoria.historico: ~1 rows (aproximadamente)
 /*!40000 ALTER TABLE `historico` DISABLE KEYS */;
 INSERT INTO `historico` (`id`, `promissoria_id`, `data_evento`, `datavencimento_original`, `datavencimento_novo`, `situacaopromissoria_original_id`, `situacaopromissoria_novo_id`, `saldo_original`, `saldo_novo`, `observacoes`) VALUES
 	(2, 3, '2016-01-07', '2016-01-07', '2016-01-07', 1, 5, -200, -150, 'pagou em dinheiro');
@@ -152,14 +160,14 @@ DROP TABLE IF EXISTS `pais`;
 CREATE TABLE IF NOT EXISTS `pais` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `descricao` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `descricao` (`descricao`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Copiando dados para a tabela controlepromissoria.pais: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela controlepromissoria.pais: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `pais` DISABLE KEYS */;
 INSERT INTO `pais` (`id`, `descricao`) VALUES
-	(1, 'Brasil');
+	(1, 'Brasil'),
+	(2, 'EUA');
 /*!40000 ALTER TABLE `pais` ENABLE KEYS */;
 
 
@@ -169,9 +177,9 @@ CREATE TABLE IF NOT EXISTS `perfilusuario` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `descricao` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- Copiando dados para a tabela controlepromissoria.perfilusuario: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela controlepromissoria.perfilusuario: ~1 rows (aproximadamente)
 /*!40000 ALTER TABLE `perfilusuario` DISABLE KEYS */;
 INSERT INTO `perfilusuario` (`id`, `descricao`) VALUES
 	(1, 'Acesso Completo');
@@ -194,11 +202,11 @@ CREATE TABLE IF NOT EXISTS `pessoa` (
   CONSTRAINT `FK_empresa_endereco_id` FOREIGN KEY (`endereco_id`) REFERENCES `endereco` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Copiando dados para a tabela controlepromissoria.pessoa: ~1 rows (aproximadamente)
+-- Copiando dados para a tabela controlepromissoria.pessoa: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `pessoa` DISABLE KEYS */;
 INSERT INTO `pessoa` (`id`, `cpf_cnpj`, `razao_social`, `nome_fantasia`, `endereco_id`) VALUES
-	(1, 12345678911, 'Thiago Augusto', 'Aguia Robo', 1),
-	(2, 98765432100, 'Jackeline', 'Jackeline', 1);
+	(1, 983170169, 'Thiago Augusto', 'Aguia Robo', 1),
+	(2, 2147483647, 'Jackeline', 'Jackeline', 1);
 /*!40000 ALTER TABLE `pessoa` ENABLE KEYS */;
 
 
@@ -324,7 +332,7 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   UNIQUE KEY `usuario` (`usuario`),
   KEY `FK_Usuario_PerfilUsuario` (`idPerfilUsuario`),
   CONSTRAINT `FK_Usuario_PerfilUsuario` FOREIGN KEY (`idPerfilUsuario`) REFERENCES `perfilusuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=utf8;
 
 -- Copiando dados para a tabela controlepromissoria.usuario: ~1 rows (aproximadamente)
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
