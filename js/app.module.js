@@ -1,1 +1,1 @@
-var app = angular.module('app', ['toastr']);
+var app = angular.module('app', ['toastr','angular-loading-bar', 'angularFileUpload']);
