@@ -163,6 +163,9 @@ session_start();
 												<li>
 													<a href="#" ng-click="navegar('pais');">Países</a>
 												</li>
+												<li>
+													<a href="#" ng-click="navegar('pessoa');">Pessoas</a>
+												</li>
 											</ul>
 											<!-- /.nav-third-level -->
 										</li>
@@ -224,6 +227,7 @@ session_start();
 		<script src="js/estadoController.js"></script>
 		<script src="js/cidadeController.js"></script>
 		<script src="js/escolaController.js"></script>
+		<script src="js/pessoaController.js"></script>
 
 		<!-- Arquivo de inicialização do mapa -->		
 		<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDvYiq57FPB-oKd7hdg-J9_eULLMAnfpMc&amp;sensor=false"></script>
