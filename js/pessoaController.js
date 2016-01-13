@@ -70,6 +70,26 @@ app.controller('pessoaController', function ($scope, $http, toastr) {
         $scope.addPessoa = false;
         $scope.lstPessoa = true;
         $scope.updtPessoa = false;
+
+
+        $scope.PessoaAdd = {
+            id: 0,
+            cpf_cnpj: '',
+            razao_social: '',
+            nome_fantasia: '',
+            endereco_id: '',
+            enderecoLogradouro: '',
+            enderecoNumero: '',
+            enderecoComplemento: '',
+            enderecoBairro: '',
+            enderecoCidadeId: '',
+            enderecoCidadeName: '',
+            enderecoCep: '',
+            enderecoLatitude: '',
+            enderecoLongetude: '',
+            enderecoPontoReferencia: ''
+        };
+
     };
 
     $scope.inserirPessoa = function () {
