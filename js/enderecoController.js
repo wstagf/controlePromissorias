@@ -42,6 +42,20 @@ app.controller('enderecoController', function ($scope, $http, toastr) {
         $scope.addEndereco = true;
         $scope.lstEndereco = false;
         $scope.updtEndereco = false;
+
+        $scope.EnderecoAdd = {
+            id: 0,
+            logradouro: '',
+            numero: '',
+            complemento: '',
+            bairro: '',
+            cidade_id: 0,
+            cidadeName: '',
+            cep: 0,
+            latitude: 0,
+            longetude: 0,
+            ponto_referencia: ''
+        };
     };
 
     $scope.showListEndereco = function () {
