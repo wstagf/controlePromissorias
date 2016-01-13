@@ -31,6 +31,13 @@ app.controller('cidadeController', function ($scope, $http, toastr) {
         $scope.addCidade = true;
         $scope.lstCidade = false;
         $scope.updtCidade = false;
+
+        $scope.CidadeAdd = {
+            id: 0,
+            descricao: '',
+            estadoId: 0,
+            estadoName: ''
+        };
     };
 
     $scope.showListCidade = function () {
