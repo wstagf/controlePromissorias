@@ -963,37 +963,35 @@ $app->get('/excluirPessoa/:idPessoa', 'auth', function ($idPessoa) use ($app) {
 
 // Crud Telefone 
 
-/*
 $app->post(
-    '/createPessoa',
+    '/createTelefone',
     function () use ($app) {
 		$data = json_decode($app->request()->getBody());
-        $cpf_cnpj = (isset($data->cpf_cnpj)) ? $data->cpf_cnpj : "";
-		$razao_social= (isset($data->razao_social)) ? $data->razao_social : "";
-		$nome_fantasia = (isset($data->nome_fantasia)) ? $data->nome_fantasia : "";
-		$endereco_id = (isset($data->endereco_id)) ? $data->endereco_id : 1;
+        $numero = (isset($data->numero)) ? $data->numero : 0;
+		$ddd = (isset($data->ddd)) ? $data->ddd : 0;
+		$ramal = (isset($data->ramal)) ? $data->ramal : "";
+		$observacao = (isset($data->observacao)) ? $data->observacao : "";
+		$pessoa_id = (isset($data->pessoa_id)) ? $data->pessoa_id : 0;
 		
         $link =createDB();
-		$sql = "INSERT INTO pessoa (cpf_cnpj, razao_social, nome_fantasia, endereco_id) VALUES ('".$cpf_cnpj."', '".$razao_social."', '".$nome_fantasia."', ".$endereco_id.");";
+		$sql = "INSERT INTO telefone (numero, ddd, ramal, observacao, pessoa_id) VALUES (".$numero.", ".$ddd.", '".$ramal."', '".$observacao."', ".$pessoa_id.");";
 		$result =  mysql_query($sql, $link);
         if (mysql_errno($link) > 0 ) {
-			 echo json_encode(array("erro"=>true, "descricao"=>"vai a merda", "cpf" => $cpf_cnpj, "razao_social" => $razao_social, "nome_fantasia"=>$nome_fantasia, "endereco_id"=>$endereco_id, "sql" => $sql));
+			 echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
         } else {
             if ($result) {
-                 echo json_encode(array("erro"=>false, "descricao"=>"vai a merda", "cpf" => $cpf_cnpj, "razao_social" => $razao_social, "nome_fantasia"=>$nome_fantasia, "endereco_id"=>$endereco_id, "sql" => $sql));
+                 echo json_encode(array("erro"=>false, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
             } 
         }
 		mysql_close($link);
     }
 );
 
-*/
-
 
 // READ - 01: Lista Completa
 $app->get('/listarTelefones', 'auth', function () use ($app) {
 		 $link =createDB();
-		$sql = "SELECT  id,  ddd,  numero,  ramail,  observacao,  pessoa_id FROM telefone order by telefone.id ";
+		$sql = "SELECT  telefone.id,  telefone.ddd,  telefone.numero,   telefone.ramal,  telefone.observacao,  telefone.pessoa_id,    pessoa.razao_social as 'pessoaName' FROM telefone inner join pessoa on pessoa.id = telefone.pessoa_id order by telefone.id ";
 		$result =  mysql_query($sql, $link);
         if (mysql_errno($link) > 0 ) {
 			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
@@ -1014,7 +1012,7 @@ $app->get('/listarTelefones', 'auth', function () use ($app) {
 $app->get('/getTelefone/:idTelefone', 'auth', function ($idTelefone) use ($app) {
 		$idTelefone = (int)$idTelefone;
 		$link = createDB();
-		$sql = "SELECT  id,  ddd,  numero,  ramail,  observacao,  pessoa_id FROM telefone where id = ".$idTelefone.";";
+		$sql = "SELECT  telefone.id,  telefone.ddd,  telefone.numero,   telefone.ramal,  telefone.observacao,  telefone.pessoa_id,    pessoa.razao_social as 'pessoaName' FROM telefone inner join pessoa on pessoa.id = telefone.pessoa_id where telefone.id = ".$idTelefone." ;";
 		$result =  mysql_query($sql, $link);
         if (mysql_errno($link) > 0 ) {
 			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
@@ -1030,20 +1028,21 @@ $app->get('/getTelefone/:idTelefone', 'auth', function ($idTelefone) use ($app) 
     }
 );
 
-/*
+
 // Update
-$app->post('/alterarPessoa/:idPessoa', 'auth', function ($idPessoa) use ($app) {
+$app->post('/alterarTelefone/:idTelefone', 'auth', function ($idTelefone) use ($app) {
         
         $data = json_decode($app->request()->getBody());
-        $idPessoa = (int)$idPessoa;
-        $cpf_cnpj = (isset($data->cpf_cnpj)) ? $data->cpf_cnpj : "";
-		$razao_social = (isset($data->razao_social)) ? $data->razao_social : "";
-		$nome_fantasia = (isset($data->nome_fantasia)) ? $data->nome_fantasia : "";
-		$endereco_id = (isset($data->endereco_id)) ? $data->endereco_id : 0;
+        $idTelefone = (int)$idTelefone;
+        $numero = (isset($data->numero)) ? $data->numero : 0;
+		$ddd = (isset($data->ddd)) ? $data->ddd : 0;
+		$ramal = (isset($data->ramal)) ? $data->ramal : "";
+		$observacao = (isset($data->observacao)) ? $data->observacao : "";
+		$pessoa_id = (isset($data->pessoa_id)) ? $data->pessoa_id : 0;
 
 		$link =createDB();
         
-		$sql = "UPDATE pessoa  SET cpf_cnpj = '".$cpf_cnpj."', razao_social = '".$razao_social."', nome_fantasia ='".$nome_fantasia."', endereco_id =".$endereco_id."  WHERE  id = ".$idPessoa.";";
+		$sql = "UPDATE telefone  SET numero = ".$numero.", ddd = ".$ddd.", ramal ='".$ramal."', observacao ='".$observacao."', pessoa_id = ".$pessoa_id. "  WHERE  id = ".$idTelefone.";";
 		$result =  mysql_query($sql, $link);
         if (mysql_errno($link) > 0 ) {
 			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
@@ -1056,12 +1055,14 @@ $app->post('/alterarPessoa/:idPessoa', 'auth', function ($idPessoa) use ($app) {
         
     }
 );
+
+
 // Delete
-$app->get('/excluirPessoa/:idPessoa', 'auth', function ($idPessoa) use ($app) {       
-		$idPessoa = (int)$idPessoa;
+$app->get('/excluirTelefone/:idTelefone', 'auth', function ($idTelefone) use ($app) {       
+		$idTelefone = (int)$idTelefone;
         $link =createDB();
         
-        $sql = "DELETE FROM pessoa WHERE id = ".$idPessoa.";";
+        $sql = "DELETE FROM telefone WHERE id = ".$idTelefone.";";
 		$result =  mysql_query($sql, $link);
         if (mysql_errno($link) > 0 ) {
 			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
@@ -1073,9 +1074,243 @@ $app->get('/excluirPessoa/:idPessoa', 'auth', function ($idPessoa) use ($app) {
 		 mysql_close($link);
     }
 );
-// fim Crud escola
+// fim Crud telefone
 
-*/
+
+
+
+
+// Crud Crianca 
+
+$app->post(
+    '/createCrianca',
+    function () use ($app) {
+		$data = json_decode($app->request()->getBody());
+        $nome = (isset($data->nome)) ? $data->nome :"";
+		$escola_id = (isset($data->escola_id)) ? $data->escola_id : 0;
+		$serie = (isset($data->serie)) ? $data->serie : "";
+		$observacao = (isset($data->observacao)) ? $data->observacao : "";
+		
+        $link =createDB();
+		$sql = "INSERT INTO crianca (nome, escola_id, serie, observacao) VALUES (".$nome.", ".$escola_id.", '".$serie."', '".$observacao."');";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			 echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                 echo json_encode(array("erro"=>false, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+            } 
+        }
+		mysql_close($link);
+    }
+);
+
+
+// READ - 01: Lista Completa
+$app->get('/listarCriancas', 'auth', function () use ($app) {
+		$link =createDB();
+		$sql = "SELECT crianca.id,  crianca.nome,  crianca.escola_id, escola.descricao as 'escolaName',  crianca.serie,  crianca.observacao FROM crianca inner join escola on escola.id = crianca.escola_id";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+			$rows = array();
+			while ($row = mysql_fetch_array($result, MYSQL_BOTH))
+			{
+				$rows[] = $row;
+			}
+			echo json_encode(array("erro"=>"false", "result"=>$rows ));
+        }
+		 mysql_close($link);
+    }
+);
+
+
+// READ - 02: item unico
+$app->get('/getCrianca/:idCrianca', 'auth', function ($idCrianca) use ($app) {
+		$idCrianca = (int)$idCrianca;
+		$link = createDB();
+		$sql = "SELECT crianca.id,  crianca.nome,  crianca.escola_id, escola.descricao as 'escolaName',  crianca.serie,  crianca.observacao FROM crianca inner join escola on escola.id = crianca.escola_id where crianca.id = ".$idCrianca." ;";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+			$rows = array();
+			while ($row = mysql_fetch_array($result, MYSQL_BOTH))
+			{
+				$rows[] = $row;
+			}
+			echo json_encode(array("erro"=>"false", "result"=>$rows[0] ));
+        }
+		 mysql_close($link);
+    }
+);
+
+
+// Update
+$app->post('/alterarCrianca/:idCrianca', 'auth', function ($idCrianca) use ($app) {
+        
+        $data = json_decode($app->request()->getBody());
+        $idCrianca = (int)$idCrianca;
+        $nome = (isset($data->nome)) ? $data->nome :"";
+		$escola_id = (isset($data->escola_id)) ? $data->escola_id : 0;
+		$serie = (isset($data->serie)) ? $data->serie : "";
+		$observacao = (isset($data->observacao)) ? $data->observacao : "";
+
+		$link =createDB();
+        
+		$sql = "UPDATE crianca  SET nome = '".$nome."', escola_id = ".$escola_id.", serie ='".$serie."', observacao ='".$observacao."'  WHERE  id = ".$idCrianca.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                echo json_encode(array("erro"=>false));
+            } 
+        }
+		 mysql_close($link);
+        
+    }
+);
+
+
+// Delete
+$app->get('/excluirCrianca/:idCrianca', 'auth', function ($idCrianca) use ($app) {       
+		$idCrianca = (int)$idCrianca;
+        $link =createDB();
+        
+        $sql = "DELETE FROM crianca WHERE id = ".$idCrianca.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                echo json_encode(array("erro"=>false, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+            } 
+        }
+		 mysql_close($link);
+    }
+);
+// fim Crud telefone
+
+
+
+
+
+// Crud responsavel 
+
+$app->post(
+    '/createResponsavel',
+    function () use ($app) {
+		$data = json_decode($app->request()->getBody());
+		$pessoa_id = (isset($data->pessoa_id)) ? $data->pessoa_id :0;
+		$crianca_id = (isset($data->crianca_id)) ? $data->crianca_id :0;
+		$link =createDB();
+		$sql = "INSERT INTO responsavel (crianca_id, pessoa_id) VALUES (".$crianca_id.", ".$pessoa_id.");";
+				
+		//echo json_encode(array("erro"=>true, "pessoa_id" => $pessoa_id, "pessoa_id"=> $pessoa_id));
+       
+
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			 echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                 echo json_encode(array("erro"=>false, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+            } 
+        }
+		mysql_close($link);
+    }
+);
+
+
+// READ - 01: Lista Completa
+$app->get('/listarResponsaveis', 'auth', function () use ($app) {
+		$link =createDB();
+		$sql = "select responsavel.id, responsavel.crianca_id, crianca.nome as 'criancaName', responsavel.pessoa_id, pessoa.razao_social as 'responsavelName' from crianca inner join responsavel on responsavel.crianca_id = crianca.id  inner join pessoa on pessoa.id = responsavel.pessoa_id";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+			$rows = array();
+			while ($row = mysql_fetch_array($result, MYSQL_BOTH))
+			{
+				$rows[] = $row;
+			}
+			echo json_encode(array("erro"=>"false", "result"=>$rows ));
+        }
+		 mysql_close($link);
+    }
+);
+
+
+// READ - 02: item unico
+$app->get('/getResponsavel/:idResponsavel', 'auth', function ($idResponsavel) use ($app) {
+		$idResponsavel = (int)$idResponsavel;
+		$link = createDB();
+		$sql = "select responsavel.id, responsavel.crianca_id, crianca.nome as 'criancaName', responsavel.pessoa_id, pessoa.razao_social as 'responsavelName' from crianca inner join responsavel on responsavel.crianca_id = crianca.id  inner join pessoa on pessoa.id = responsavel.pessoa_id where responsavel.id = ".$idResponsavel." ;";
+
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+			$rows = array();
+			while ($row = mysql_fetch_array($result, MYSQL_BOTH))
+			{
+				$rows[] = $row;
+			}
+			echo json_encode(array("erro"=>"false", "result"=>$rows[0] ));
+        }
+		 mysql_close($link);
+    }
+);
+
+
+// Update
+$app->post('/alterarResponsavel/:idResponsavel', 'auth', function ($idResponsavel) use ($app) {
+        $data = json_decode($app->request()->getBody());
+		$idResponsavel = (int)$idResponsavel;
+		$pessoa_id = (isset($data->pessoa_id)) ? $data->pessoa_id :0;
+		$crianca_id = (isset($data->crianca_id)) ? $data->crianca_id :0;
+		$link =createDB();
+		
+		$sql = "UPDATE responsavel  SET pessoa_id = ".$pessoa_id.", crianca_id = ".$crianca_id." WHERE  id = ".$idResponsavel.";";
+		//echo json_encode(array("erro"=>true, "idResponsavel" => $idResponsavel, "pessoa_id"=> $pessoa_id, "crianca_id"=> $crianca_id, "sql" => $sql ));
+	
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                echo json_encode(array("erro"=>false));
+            } 
+        }
+		mysql_close($link);
+        
+    }
+);
+
+
+// Delete
+$app->get('/excluirResponsavel/:idCrianca', 'auth', function ($idResponsavel) use ($app) {       
+		$idCrianca = (int)$idResponsavel;
+        $link =createDB();
+        
+        $sql = "DELETE FROM responsavel WHERE id = ".$idResponsavel.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                echo json_encode(array("erro"=>false, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+            } 
+        }
+		 mysql_close($link);
+    }
+);
+// fim Crud responsavel
+
+
 
 
 $app->run();
