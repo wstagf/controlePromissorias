@@ -2,7 +2,7 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <h3 class="page-header">Escolas</h1>
+            <h3 class="page-header">Pessoas</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
