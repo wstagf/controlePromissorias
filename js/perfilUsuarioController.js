@@ -25,6 +25,13 @@ app.controller('perfilusuarioController', function ($scope, $http, toastr) {
         $scope.addPerfilUsuario = true;
         $scope.lstPerfilUsuario = false;
         $scope.updtPerfilUsuario = false;
+
+        $scope.perfilUsuarioAdd = {
+            id: 0,
+            descricao: ''
+        };
+
+
     };
 
     $scope.showListPerfilUsuario = function () {
