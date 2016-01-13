@@ -66,6 +66,25 @@ app.controller('escolaController', function ($scope, $http, toastr) {
         $scope.addEscola = true;
         $scope.lstEscola = false;
         $scope.updtEscola = false;
+
+        $scope.EscolaAdd = {
+            id: 0,
+            descricao: '',
+            dddtelefone: '',
+            numtelefone: '',
+            enderecoId: '',
+            observacoes: '',
+            enderecoLogradouro: '',
+            enderecoNumero: '',
+            enderecoComplemento: '',
+            enderecoBairro: '',
+            enderecoCidadeId: '',
+            enderecoCidadeName: '',
+            enderecoCep: '',
+            enderecoLatitude: '',
+            enderecoLongetude: '',
+            enderecoPontoReferencia: ''
+        };
     };
 
     $scope.showListEscola = function () {
