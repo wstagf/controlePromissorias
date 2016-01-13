@@ -25,6 +25,11 @@ app.controller('paisController', function ($scope, $http, toastr) {
         $scope.addPais = true;
         $scope.lstPais = false;
         $scope.updtPais = false;
+
+        $scope.PaisAdd = {
+            id: 0,
+            descricao: ''
+        };
     };
 
     $scope.showListPais = function () {
