@@ -31,6 +31,14 @@ app.controller('estadoController', function ($scope, $http, toastr) {
         $scope.addEstado = true;
         $scope.lstEstado = false;
         $scope.updtEstado = false;
+
+        $scope.EstadoAdd = {
+            id: 0,
+            descricao: '',
+            paisId: 0,
+            paisName: ''
+        };
+
     };
 
     $scope.showListEstado = function () {
