@@ -149,13 +149,13 @@ session_start();
 											</ul>
 										</li>
 										<li>
-											<a href="#">Tabelas <span class="fa arrow"></span></a>
+											<a href="#">Endereco <span class="fa arrow"></span></a>
 											<ul class="nav nav-third-level">
 												<li>
 													<a href="#" ng-click="navegar('cidade');">Cidades</a>
 												</li>
 												<li>
-													<a href="#" ng-click="navegar('endereco');">Endereço</a>
+													<a href="#" ng-click="navegar('endereco');">Endereços</a>
 												</li>
 												<li>
 													<a href="#" ng-click="navegar('estado');">Estados</a>
@@ -163,11 +163,23 @@ session_start();
 												<li>
 													<a href="#" ng-click="navegar('pais');">Países</a>
 												</li>
+											</ul>
+											<!-- /.nav-third-level -->
+										</li>
+										<li>
+											<a href="#">Pessoas <span class="fa arrow"></span></a>
+											<ul class="nav nav-third-level">
 												<li>
 													<a href="#" ng-click="navegar('pessoa');">Pessoas</a>
 												</li>
 												<li>
 													<a href="#" ng-click="navegar('telefone');">Telefones</a>
+												</li>
+												<li>
+													<a href="#" ng-click="navegar('crianca');">Crianças</a>
+												</li>
+												<li>
+													<a href="#" ng-click="navegar('responsavel');">Responsaveis</a>
 												</li>
 											</ul>
 											<!-- /.nav-third-level -->
@@ -232,6 +244,8 @@ session_start();
 		<script src="js/escolaController.js"></script>
 		<script src="js/pessoaController.js"></script>
 		<script src="js/telefoneController.js"></script>
+		<script src="js/criancaController.js"></script>
+		<script src="js/responsavelController.js"></script>
 
 		<!-- Arquivo de inicialização do mapa -->		
 		<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDvYiq57FPB-oKd7hdg-J9_eULLMAnfpMc&amp;sensor=false"></script>
