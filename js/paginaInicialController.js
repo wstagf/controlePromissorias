@@ -33,6 +33,13 @@ app.controller('paginaInicialController', function ($scope, $http, toastr) {
         $scope.addUsuario = true;
         $scope.lstUsuario = false;
         $scope.updtUsuario = false;
+
+        $scope.usuario = {
+            id: 0,
+            usuario: '',
+            idPerfilUsuario: 0,
+            status: 0
+        }
     }
 
     $scope.showListUsuario = function () {
@@ -134,3 +141,4 @@ app.controller('paginaInicialController', function ($scope, $http, toastr) {
 
     $scope.listarUsuarios();
 })
+
