@@ -1,4 +1,4 @@
-app.controller('escolaController', function ($scope, $http, toastr) {
+app.controller('viewEscolaController', function ($scope, $http, toastr) {
     $scope.Escola = {
         id: 0,
         descricao: '',
