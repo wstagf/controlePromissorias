@@ -1,4 +1,4 @@
-<div ng-controller="escolaController">  
+<div ng-controller="viewEscolaController">  
 
     <div class="row">
         <div class="col-lg-12">
