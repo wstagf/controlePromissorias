@@ -129,7 +129,7 @@ session_start();
 									<a href="#" ><i class="fa fa-table fa-fw"></i>Cadastros<span class="fa arrow"></span></a>
 									<ul class="nav nav-second-level">
 										<li>
-											<a href="#" ng-click="navegar('escola');">Escolas</a>
+											<a href="#" ng-click="navegar('viewescola');">Escolas</a>
 										</li>
 									</ul>
 									<!-- /.nav-second-level -->
@@ -193,6 +193,11 @@ session_start();
 												<li>
 													<a href="#" ng-click="navegar('trabalho');">Trabalho</a>
 												</li>
+												<ul class="nav nav-second-level">
+													<li>
+														<a href="#" ng-click="navegar('escola');">Escolas</a>
+													</li>
+												</ul>
 												<li>
 													<a href="#" ng-click="navegar('crianca');">Crianças</a>
 												</li>
@@ -251,21 +256,23 @@ session_start();
 		<script src="js/angular/angular-file-upload.min.js"></script>
 		<script src="js/angular/loading-bar.min.js"></script>
 
-        <script src="js/app.module.js"></script>
+                <script src="js/app.module.js"></script>
 		<script src="js/loginController.js"></script>
-        <script src="js/paginaInicialController.js"></script>
+        	<script src="js/paginaInicialController.js"></script>
 		<script src="js/perfilUsuarioController.js"></script>
 		<script src="js/enderecoController.js"></script>
 		<script src="js/paisController.js"></script>
 		<script src="js/estadoController.js"></script>
 		<script src="js/cidadeController.js"></script>
-		<script src="js/escolaController.js"></script>
 		<script src="js/pessoaController.js"></script>
 		<script src="js/telefoneController.js"></script>
 		<script src="js/criancaController.js"></script>
 		<script src="js/responsavelController.js"></script>
 		<script src="js/situacaopromissoriaController.js"></script>
 		<script src="js/trabalhoController.js"></script>
+		<script src="js/escolaController.js"></script>
+
+		<script src="js/viewescolaController.js"></script>
 
 		<!-- Arquivo de inicialização do mapa -->		
 		<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDvYiq57FPB-oKd7hdg-J9_eULLMAnfpMc&amp;sensor=false"></script>
