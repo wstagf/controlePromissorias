@@ -1416,4 +1416,116 @@ $app->get('/excluirSituacaoPromissoria/:idSituacaoPromissoria', 'auth', function
 
 
 
+// Crud Trabalho
+$app->post(
+    '/createTrabalho',
+    function () use ($app) {
+		$data = json_decode($app->request()->getBody());
+        $crianca_id = (isset($data->crianca_id)) ? $data->crianca_id : "0";
+		$valor = (isset($data->valor)) ? $data->valor : "0";
+		$parcelas = (isset($data->parcelas)) ? $data->parcelas : "0";
+		$saldo = (isset($data->saldo)) ? $data->saldo : "0";
+		$observacoes = (isset($data->observacoes)) ? $data->observacoes :"0";
+
+
+        $link =createDB();
+		
+		$sql = "INSERT INTO Trabalho (crianca_id, valor, parcelas, saldo, observacoes) VALUES (".$crianca_id.", ".$valor.", ".$parcelas.", ".$saldo.", '".$observacoes."');";
+		
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                echo json_encode(array("erro"=>false, "sql" => $sql));
+            } 
+        }
+		 mysql_close($link);
+    }
+);
+// READ - 01: Lista Completa
+$app->get('/listarTrabalhos', 'auth', function () use ($app) {
+		$link = createDB();
+
+		$sql = "select trabalho.id, trabalho.crianca_id, crianca.nome as 'criancaName', trabalho.valor, trabalho.parcelas, trabalho.saldo, trabalho.observacoes from trabalho inner join crianca on crianca.id = trabalho.crianca_id order by trabalho.id";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+			$rows = array();
+			while ($row = mysql_fetch_array($result, MYSQL_BOTH))
+		{
+				$rows[] = $row;
+		}
+		echo json_encode(array("erro"=>"false", "result"=>$rows ));
+        }
+		 mysql_close($link);
+    }
+);
+// READ - 02: item unico
+$app->get('/getTrabalho/:idTrabalho', 'auth', function ($idTrabalho) use ($app) {
+		$idTrabalho = (int)$idTrabalho;
+		$link = createDB();
+		$sql = "select trabalho.id, trabalho.crianca_id, crianca.nome as 'criancaName', trabalho.valor, trabalho.parcelas, trabalho.saldo, trabalho.observacoes from trabalho inner join crianca on crianca.id = trabalho.crianca_id where trabalho.id = ".$idTrabalho.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+			$rows = array();
+			while ($row = mysql_fetch_array($result, MYSQL_BOTH))
+			{
+				$rows[] = $row;
+			}
+			echo json_encode(array("erro"=>"false", "result"=>$rows[0] ));
+        }
+		 mysql_close($link);
+    }
+);
+// Update
+$app->post('/alterarTrabalho/:idTrabalho', 'auth', function ($idTrabalho) use ($app) {
+        
+        $data = json_decode($app->request()->getBody());
+        $idTrabalho = (int)$idTrabalho;
+		$crianca_id = (isset($data->crianca_id)) ? $data->crianca_id : "0";
+		$valor = (isset($data->valor)) ? $data->valor : "0";
+		$parcelas = (isset($data->parcelas)) ? $data->parcelas : "0";
+		$saldo = (isset($data->saldo)) ? $data->saldo : "0";
+		$observacoes = (isset($data->observacoes)) ? $data->observacoes :"0";
+       
+		$link =createDB();
+        
+		$sql = "UPDATE trabalho  SET  crianca_id = ".$crianca_id.", valor = ".$valor.", parcelas = ".$parcelas.", saldo = ".$saldo.", observacoes = '".$observacoes."'  WHERE  id = ".$idTrabalho.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                echo json_encode(array("erro"=>false));
+            } 
+        }
+		 mysql_close($link);
+        
+    }
+);
+// Delete
+$app->get('/excluirTrabalho/:idTrabalho', 'auth', function ($idTrabalho) use ($app) {       
+		$idTrabalho = (int)$idTrabalho;
+        $link =createDB();
+        
+        $sql = "DELETE FROM Trabalho WHERE id = ".$idTrabalho.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                echo json_encode(array("erro"=>false));
+            } 
+        }
+		 mysql_close($link);
+    }
+);
+// fim Crud   Trabalho
+
+
+
 $app->run();
