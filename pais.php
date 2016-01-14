@@ -70,12 +70,6 @@
                         <label>Formulario de Edição de Perfil Usuario</label>
 						<form class="form-horizontal" ng-submit="alterarPais()">
 							<div class="form-group">
-							<label for="inputEmail3" class="col-sm-2 control-label">ID</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" id="inputEmail3" placeholder="ID" ng-model="Pais.id" required>
-							</div>
-							</div>
-							<div class="form-group">
 							<label for="inputEmail3" class="col-sm-2 control-label">Descricao</label>
 							<div class="col-sm-10">
 								<input type="text" class="form-control" id="inputEmail3" placeholder="Nome do País" ng-model="Pais.descricao" required>
