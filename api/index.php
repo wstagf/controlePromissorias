@@ -1313,4 +1313,107 @@ $app->get('/excluirResponsavel/:idCrianca', 'auth', function ($idResponsavel) us
 
 
 
+// Crud SituacaoPromissoria
+$app->post(
+    '/createSituacaoPromissoria',
+    function () use ($app) {
+		$data = json_decode($app->request()->getBody());
+        $descricao = (isset($data->descricao)) ? $data->descricao : "";
+
+        $link =createDB();
+       
+		$sql = "INSERT INTO situacaopromissoria (descricao) VALUES ('".$descricao."');";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                echo json_encode(array("erro"=>false, "descricao"=>$descricao, "sql" => $sql));
+            } 
+        }
+		 mysql_close($link);
+    }
+);
+// READ - 01: Lista Completa
+$app->get('/listarSituacaoPromissoriaes', 'auth', function () use ($app) {
+		$link = createDB();
+		
+
+		$sql = "select situacaopromissoria.id, situacaopromissoria.descricao from situacaopromissoria order by situacaopromissoria.id";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+			$rows = array();
+			while ($row = mysql_fetch_array($result, MYSQL_BOTH))
+		{
+				$rows[] = $row;
+		}
+		echo json_encode(array("erro"=>"false", "result"=>$rows ));
+        }
+		 mysql_close($link);
+    }
+);
+// READ - 02: item unico
+$app->get('/getSituacaoPromissoria/:idSituacaoPromissoria', 'auth', function ($idSituacaoPromissoria) use ($app) {
+		$idSituacaoPromissoria = (int)$idSituacaoPromissoria;
+		$link = createDB();
+		$sql = "select situacaopromissoria.id, situacaopromissoria.descricao from situacaopromissoria  where situacaopromissoria.id = ".$idSituacaoPromissoria.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+			$rows = array();
+			while ($row = mysql_fetch_array($result, MYSQL_BOTH))
+			{
+				$rows[] = $row;
+			}
+			echo json_encode(array("erro"=>"false", "result"=>$rows[0] ));
+        }
+		 mysql_close($link);
+    }
+);
+// Update
+$app->post('/alterarSituacaoPromissoria/:idSituacaoPromissoria', 'auth', function ($idSituacaoPromissoria) use ($app) {
+        
+        $data = json_decode($app->request()->getBody());
+        $idSituacaoPromissoria = (int)$idSituacaoPromissoria;
+        $descricao = (isset($data->descricao)) ? $data->descricao : "";
+       
+		$link =createDB();
+        
+		$sql = "UPDATE situacaopromissoria  SET  descricao = '".$descricao."' WHERE  id = ".$idSituacaoPromissoria.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                echo json_encode(array("erro"=>false));
+            } 
+        }
+		 mysql_close($link);
+        
+    }
+);
+// Delete
+$app->get('/excluirSituacaoPromissoria/:idSituacaoPromissoria', 'auth', function ($idSituacaoPromissoria) use ($app) {       
+		$idSituacaoPromissoria = (int)$idSituacaoPromissoria;
+        $link =createDB();
+        
+        $sql = "DELETE FROM situacaopromissoria WHERE id = ".$idSituacaoPromissoria.";";
+		$result =  mysql_query($sql, $link);
+        if (mysql_errno($link) > 0 ) {
+			echo json_encode(array("erro"=>true, "mysql_errno" => mysql_errno($link), "mysql_error" => mysql_error($link), "sql" => $sql));
+        } else {
+            if ($result) {
+                echo json_encode(array("erro"=>false));
+            } 
+        }
+		 mysql_close($link);
+    }
+);
+// fim Crud   SituacaoPromissoria
+
+
+
 $app->run();
