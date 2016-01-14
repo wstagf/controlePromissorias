@@ -191,7 +191,7 @@ session_start();
 													<a href="#" ng-click="navegar('situacaopromissoria');">Situação de Promissorias</a>
 												</li>
 												<li>
-													<a href="#" ng-click="navegar('telefone');">Telefones</a>
+													<a href="#" ng-click="navegar('trabalho');">Trabalho</a>
 												</li>
 												<li>
 													<a href="#" ng-click="navegar('crianca');">Crianças</a>
@@ -265,6 +265,7 @@ session_start();
 		<script src="js/criancaController.js"></script>
 		<script src="js/responsavelController.js"></script>
 		<script src="js/situacaopromissoriaController.js"></script>
+		<script src="js/trabalhoController.js"></script>
 
 		<!-- Arquivo de inicialização do mapa -->		
 		<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDvYiq57FPB-oKd7hdg-J9_eULLMAnfpMc&amp;sensor=false"></script>
